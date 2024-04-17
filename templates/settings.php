@@ -6,14 +6,14 @@ require_once '../includes/conn.php';
 session_start();
 
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['login_id'])) {
     // Redirect to login page if not logged in
     header("Location: login.php");
     exit();
 }
 
 // Check user role
-if ($_SESSION['user_role'] === 'admin') {
+if ($_SESSION['login_user_role'] === 'admin') {
     // Include admin header and nav bar
     include_once '../components/admin/admin_header.php';
     include_once '../components/admin/admin_nav.php';
@@ -24,13 +24,13 @@ if ($_SESSION['user_role'] === 'admin') {
 }
 
 // Fetch user data from the database
-$user_id = $_SESSION['user_id'];
-$sql = "SELECT * FROM user WHERE user_id = '$user_id'";
+$login_id = $_SESSION['login_id'];
+$sql = "SELECT * FROM login WHERE login_id = '$login_id'";
 $result = $conn->query($sql);
 if ($result->num_rows == 1) {
     $row = $result->fetch_assoc();
-    $current_name = $row['user_name'];
-    $current_email = $row['user_email'];
+    $current_name = $row['login_user_name'];
+    $current_email = $row['login_user_email'];
 } else {
     // User not found
     echo "User not found.";
@@ -46,9 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Handle name update
     if (!empty($_POST["new_name"])) {
         $new_name = $_POST["new_name"];
-        // Validate name
         // Update name in the database
-        $sql = "UPDATE user SET name = '$new_name' WHERE user_id = '$user_id'";
+        $sql = "UPDATE login SET login_user_name = '$new_name' WHERE login_id = '$login_id'";
         if ($conn->query($sql) === TRUE) {
             // Name updated successfully
             $current_name = $new_name;
@@ -62,14 +61,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!empty($_POST["new_email"])) {
         $new_email = $_POST["new_email"];
         // Validate email
-        if (!filter_var(
-            $new_email,
-            FILTER_VALIDATE_EMAIL
-        )) {
+        if (!filter_var($new_email, FILTER_VALIDATE_EMAIL)) {
             $emailErr = "Invalid email format";
         } else {
             // Update email in the database
-            $sql = "UPDATE user SET email = '$new_email' WHERE user_id = '$user_id'";
+            $sql = "UPDATE login SET login_user_email = '$new_email' WHERE login_id = '$login_id'";
             if ($conn->query($sql) === TRUE) {
                 // Email updated successfully
                 $current_email = $new_email;
@@ -85,10 +81,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $current_password = $_POST["current_password"];
         $new_password = $_POST["new_password"];
         // Validate current password
-        if (password_verify($current_password, $row['password'])) {
+        if (password_verify($current_password, $row['login_password'])) {
             // Hash and update new password
             $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-            $sql = "UPDATE user SET password = '$hashed_password' WHERE user_id = '$user_id'";
+            $sql = "UPDATE login SET login_password = '$hashed_password' WHERE login_id = '$login_id'";
             if ($conn->query($sql) === TRUE) {
                 // Password updated successfully
             } else {
@@ -104,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Handle account deletion
     if (isset($_POST["delete_account"])) {
         // Delete user account from the database
-        $sql = "DELETE FROM user WHERE user_id = '$user_id'";
+        $sql = "DELETE FROM login WHERE login_id = '$login_id'";
         if ($conn->query($sql) === TRUE) {
             // User account deleted successfully
             // Redirect to logout or home page

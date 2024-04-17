@@ -25,21 +25,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // If there are no input errors, proceed with login
     if (empty($emailErr) && empty($passwordErr)) {
         // Prepare and execute SQL statement to fetch user data
-        $sql = "SELECT * FROM user WHERE user_email='$email'";
+        $sql = "SELECT * FROM login WHERE login_user_email='$email'";
         $result = $conn->query($sql);
 
         if ($result->num_rows == 1) {
             // User found, verify password
             $row = $result->fetch_assoc();
-            if (password_verify($password, $row['user_password'])) {
+            if (password_verify($password, $row['login_password'])) {
                 // Password is correct, set session variables and redirect based on user role
                 session_start();
-                $_SESSION['user_id'] = $row['user_id'];
-                $_SESSION['user_name'] = $row['user_name'];
-                $_SESSION['user_role'] = $row['user_role'];
+                $_SESSION['login_id'] = $row['login_id'];
+                $_SESSION['login_user_name'] = $row['login_user_name'];
+                $_SESSION['login_user_role'] = $row['login_user_role'];
 
                 // Redirect based on user role
-                if ($row['user_role'] == 'admin') {
+                if ($row['login_user_role'] == 'admin') {
                     header("Location: admin_home.php");
                 } else {
                     header("Location: user_home.php");

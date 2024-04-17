@@ -2,12 +2,11 @@
 // Start session to check user authentication
 session_start();
 
-
 // Include the admin header
 include_once '../components/admin/admin_header.php';
 
 // Check if user is logged in and is an admin
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+if (!isset($_SESSION['login_id']) || $_SESSION['login_user_role'] !== 'admin') {
     // Redirect to login page if not logged in or not an admin
     header("Location: login.php");
     exit();
@@ -21,18 +20,18 @@ $username = $email = $role = '';
 $usernameErr = $emailErr = $roleErr = '';
 
 // Check if user ID is provided in the URL
-if (isset($_GET['user_id']) && !empty($_GET['user_id'])) {
-    $user_id = $_GET['user_id'];
+if (isset($_GET['login_id']) && !empty($_GET['login_id'])) {
+    $login_id = $_GET['login_id'];
 
     // Retrieve user data from the database
-    $sql = "SELECT * FROM user WHERE user_id = '$user_id'";
+    $sql = "SELECT * FROM login WHERE login_id = '$login_id'";
     $result = $conn->query($sql);
 
     if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();
-        $username = $row['user_name'];
-        $email = $row['user_email'];
-        $role = $row['user_role'];
+        $username = $row['login_user_name'];
+        $email = $row['login_user_email'];
+        $role = $row['login_user_role'];
     } else {
         // User not found
         echo "User not found.";
@@ -68,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // If there are no input errors, proceed with updating user
     if (empty($usernameErr) && empty($emailErr) && empty($roleErr)) {
         // Prepare and execute SQL statement to update user data in the database
-        $sql = "UPDATE user SET username='$username', email='$email', role='$role' WHERE user_id='$user_id'";
+        $sql = "UPDATE login SET login_user_name='$username', login_user_email='$email', login_user_role='$role' WHERE login_id='$login_id'";
 
         if ($conn->query($sql) === TRUE) {
             // User updated successfully, redirect to admin users page

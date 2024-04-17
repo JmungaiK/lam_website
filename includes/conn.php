@@ -1,10 +1,10 @@
 <?php
 
 // Database connection parameters
-$servername = "localhost";
-$username = "root"; // Your MySQL username
-$password = ""; // Your MySQL password
-$database = "money_website"; // Your database name
+$servername = ""; // Your database server name
+$username = ""; // Your database username
+$password = ""; // Your database password
+$database = ""; // Your database name
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $database);

@@ -7,11 +7,12 @@ include_once '../components/user/user_header.php';
 include_once '../components/user/user_nav.php';
 
 // Check if user is logged in and is a user
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'user') {
+if (!isset($_SESSION['login_id']) || $_SESSION['login_user_role'] !== 'user') {
     // Redirect to login page if not logged in or not a user
     header("Location: login.php");
     exit();
 }
+
 
 // Include your PHP database connection file
 include_once '../includes/conn.php';

@@ -12,14 +12,13 @@ include_once '../components/admin/admin_nav.php';
 // Example: Include PHPExcel library for Excel report generation
 // include_once '../libraries/PHPExcel/PHPExcel.php';
 
-// Check if the user is logged in as admin, if not redirect them to the login page
-if (
-    !isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin'
-) {
+// Check if user is logged in and is an admin
+if (!isset($_SESSION['login_id']) || $_SESSION['login_user_role'] !== 'admin') {
     // Redirect to login page if not logged in or not an admin
     header("Location: login.php");
     exit();
 }
+
 ?>
 
 <br>

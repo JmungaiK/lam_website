@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // Prepare and execute SQL statement to insert user data into the database
-        $sql = "INSERT INTO user (user_name, user_email, user_password) VALUES ('$name', '$email', '$hashed_password')";
+        $sql = "INSERT INTO login (login_user_name, login_user_email, login_password) VALUES ('$name', '$email', '$hashed_password')";
 
         if ($conn->query($sql) === TRUE) {
             // Redirect to login page after successful registration

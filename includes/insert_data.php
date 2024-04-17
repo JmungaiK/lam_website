@@ -1,6 +1,5 @@
 <?php
 
-
 // Include the database connection file
 require_once 'conn.php';
 
@@ -11,7 +10,7 @@ $users = array(
 );
 
 // SQL statement to insert users into the table
-$sql = "INSERT INTO user (user_name, user_email, user_role, user_password) VALUES ";
+$sql = "INSERT INTO login (login_user_name, login_user_email, login_user_role, login_password) VALUES ";
 
 foreach ($users as $user) {
     $name = $user[0];

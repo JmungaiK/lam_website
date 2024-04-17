@@ -9,17 +9,18 @@ include_once '../components/admin/admin_header.php';
 include_once '../components/admin/admin_nav.php';
 
 // Check if user is logged in and is an admin
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+if (!isset($_SESSION['login_id']) || $_SESSION['login_user_role'] !== 'admin') {
     // Redirect to login page if not logged in or not an admin
     header("Location: login.php");
     exit();
 }
 
+
 // Include the database connection file
 require_once '../includes/conn.php';
 
 // Retrieve all users from the database
-$sql = "SELECT * FROM user";
+$sql = "SELECT * FROM login";
 $result = $conn->query($sql);
 
 // Close database connection
@@ -40,10 +41,10 @@ $conn->close();
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
-                echo "<td>" . $row["user_name"] . "</td>";
-                echo "<td>" . $row["user_email"] . "</td>";
-                echo "<td>" . $row["user_role"] . "</td>";
-                echo "<td><a href='update_user.php?user_id=" . $row["user_id"] . "'>Update</a> | <a href='delete_user.php?user_id=" . $row["user_id"] . "'>Delete</a></td>";
+                echo "<td>" . $row["login_user_name"] . "</td>"; // Changed to login_user_name
+                echo "<td>" . $row["login_user_email"] . "</td>"; // Changed to login_user_email
+                echo "<td>" . $row["login_user_role"] . "</td>"; // Changed to login_user_role
+                echo "<td><a href='update_user.php?login_id=" . $row["login_id"] . "'>Update</a> | <a href='delete_user.php?login_id=" . $row["login_id"] . "'>Delete</a></td>"; // Changed user_id to login_id
                 echo "</tr>";
             }
         } else {

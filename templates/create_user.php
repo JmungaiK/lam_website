@@ -7,11 +7,12 @@ session_start();
 include_once '../components/admin/admin_header.php';
 
 // Check if user is logged in and is an admin
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+if (!isset($_SESSION['login_id']) || $_SESSION['login_user_role'] !== 'admin') {
     // Redirect to login page if not logged in or not an admin
     header("Location: login.php");
     exit();
 }
+
 
 // Include the database connection file
 require_once '../includes/conn.php';
@@ -54,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         // Prepare and execute SQL statement to insert user data into the database
-        $sql = "INSERT INTO user (user_name, user_email, user_role, user_password) VALUES ('$name', '$email', '$role', '$hashed_password')";
+        $sql = "INSERT INTO login (login_user_name, login_user_email, login_user_role, login_password) VALUES ('$name', '$email', '$role', '$hashed_password')";
 
         if ($conn->query($sql) === TRUE) {
             // User created successfully, redirect to admin dashboard or user list page

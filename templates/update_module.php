@@ -7,7 +7,7 @@ session_start();
 include_once '../components/admin/admin_header.php';
 
 // Check if user is logged in and is an admin
-if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+if (!isset($_SESSION['login_id']) || $_SESSION['login_user_role'] !== 'admin') {
     // Redirect to login page if not logged in or not an admin
     header("Location: login.php");
     exit();

@@ -3,11 +3,11 @@
 require_once '../includes/conn.php';
 
 // Check if user ID is provided in the URL
-if (isset($_GET['user_id']) && !empty($_GET['user_id'])) {
-    $user_id = $_GET['user_id'];
+if (isset($_GET['login_id']) && !empty($_GET['login_id'])) {
+    $user_id = $_GET['login_id'];
 
     // Delete the user
-    $sql_delete_user = "DELETE FROM user WHERE user_id = '$user_id'";
+    $sql_delete_user = "DELETE FROM login WHERE login_id = '$user_id'";
     if ($conn->query($sql_delete_user) === TRUE) {
         // User deleted successfully
         header("Location: admin_users.php");
